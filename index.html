@@ -2852,6 +2852,8 @@
   const navLinks = document.querySelectorAll('.nav-links a');
 
   function updateActiveLink() {
+    const anyArticleOpen = document.querySelector('.full-article.active');
+    if (anyArticleOpen) return;
     let current = '';
     sections.forEach(section => {
       const sectionTop = section.offsetTop - 200;
