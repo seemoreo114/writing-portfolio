@@ -2851,9 +2851,10 @@
   const sections = document.querySelectorAll('section[id], .blog-section[id]');
   const navLinks = document.querySelectorAll('.nav-links a');
 
+  let articleOpen = false;
+
   function updateActiveLink() {
-    const anyArticleOpen = document.querySelector('.full-article.active');
-    if (anyArticleOpen) return;
+    if (articleOpen) return;
     let current = '';
     sections.forEach(section => {
       const sectionTop = section.offsetTop - 200;
@@ -2874,14 +2875,14 @@
   function openArticle(id) {
     const article = document.getElementById(id);
     article.classList.add('active');
+    articleOpen = true;
     article.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    // Lock body scroll slightly to indicate modal-like focus
-    // but keep it accessible - just smooth scroll into view
   }
 
   function closeArticle(id) {
     const article = document.getElementById(id);
     article.classList.remove('active');
+    articleOpen = false;
     // Scroll back to the corresponding section
     const sectionId = id.replace('article-', '');
     const sectionMap = {
@@ -2897,12 +2898,26 @@
       'culture-industry': 'reading',
       'earth-end': 'fanfic',
       'subjectivity': 'academic',
-      'artistic-personality': 'academic'
+      'artistic-personality': 'academic',
+      'blog-1': 'blog',
+      'blog-2': 'blog',
+      'blog-3': 'blog',
+      'blog-4': 'blog',
+      'blog-5': 'blog',
+      'blog-6': 'blog',
+      'blog-7': 'blog',
+      'blog-8': 'blog',
+      'blog-9': 'blog',
+      'blog-10': 'blog',
+      'blog-11': 'blog',
+      'blog-12': 'blog',
+      'blog-13': 'blog'
     };
     const targetSection = document.getElementById(sectionMap[sectionId] || 'micro-fiction');
     if (targetSection) {
       targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+    updateActiveLink();
   }
 </script>
 
