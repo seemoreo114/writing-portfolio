@@ -4,10 +4,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preload" as="image" href="assets/cover.jpg">
 <title>白庭毓 · 文字作品集</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet"></noscript>
 <style>
   /* ========== RESET & BASE ========== */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -715,7 +717,7 @@
 <!-- ============================================ -->
 <section class="section" id="micro-fiction">
   <div class="section-banner fade-in">
-    <div class="section-banner-img" style="background-image: url('assets/section-weixiaoshuo.jpg')"></div>
+    <div class="section-banner-img" data-bg="url('assets/section-weixiaoshuo.jpg')"></div>
     <div class="section-banner-title">
       <div class="section-banner-label">Micro Fiction</div>
       <div class="section-banner-name">微 小 说</div>
@@ -778,7 +780,7 @@
 <!-- ============================================ -->
 <section class="section" id="essay">
   <div class="section-banner fade-in">
-    <div class="section-banner-img" style="background-image: url('assets/section-sanwen.jpg')"></div>
+    <div class="section-banner-img" data-bg="url('assets/section-sanwen.jpg')"></div>
     <div class="section-banner-title">
       <div class="section-banner-label">Essay</div>
       <div class="section-banner-name">散 文</div>
@@ -817,7 +819,7 @@
 <!-- ============================================ -->
 <section class="section" id="reading">
   <div class="section-banner fade-in">
-    <div class="section-banner-img" style="background-image: url('assets/section-dushu.jpg')"></div>
+    <div class="section-banner-img" data-bg="url('assets/section-dushu.jpg')"></div>
     <div class="section-banner-title">
       <div class="section-banner-label">Reading Notes</div>
       <div class="section-banner-name">读 书 手 札</div>
@@ -880,7 +882,7 @@
 <!-- ============================================ -->
 <section class="blog-section" id="blog">
   <div class="section-banner fade-in">
-    <div class="section-banner-img" style="background-image: url('assets/section-boke.jpg')"></div>
+    <div class="section-banner-img" data-bg="url('assets/section-boke.jpg')"></div>
     <div class="section-banner-title">
       <div class="section-banner-label">Blog</div>
       <div class="section-banner-name">日 常 博 客</div>
@@ -1253,7 +1255,7 @@
 <!-- ============================================ -->
 <section class="section" id="fanfic">
   <div class="section-banner fade-in">
-    <div class="section-banner-img" style="background-image: url('assets/section-tongren.jpg')"></div>
+    <div class="section-banner-img" data-bg="url('assets/section-tongren.jpg')"></div>
     <div class="section-banner-title">
       <div class="section-banner-label">Fan Fiction</div>
       <div class="section-banner-name">同 人 作 品</div>
@@ -1282,7 +1284,7 @@
 <!-- ============================================ -->
 <section class="section" id="academic">
   <div class="section-banner fade-in">
-    <div class="section-banner-img" style="background-image: url('assets/section-xueshu.jpg')"></div>
+    <div class="section-banner-img" data-bg="url('assets/section-xueshu.jpg')"></div>
     <div class="section-banner-title">
       <div class="section-banner-label">Academic Works</div>
       <div class="section-banner-name">学 术 作 品</div>
@@ -2832,6 +2834,19 @@
   document.querySelectorAll('.fade-in').forEach(el => {
     observer.observe(el);
   });
+
+  // ========== LAZY LOAD SECTION BANNERS ==========
+  const lazyBanners = document.querySelectorAll('.section-banner-img[data-bg]');
+  const bannerObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        el.style.backgroundImage = el.dataset.bg;
+        bannerObserver.unobserve(el);
+      }
+    });
+  }, { rootMargin: '200px' });
+  lazyBanners.forEach(el => bannerObserver.observe(el));
 
   // ========== SMOOTH SCROLL FOR NAV LINKS ==========
   document.querySelectorAll('.nav-links a').forEach(link => {
